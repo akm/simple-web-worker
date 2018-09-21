@@ -10,18 +10,32 @@ if (window.Worker) { // Check if Browser supports the Worker api.
 // onkeyup could be used instead of onchange if you wanted to update the answer every time
 // an entered value is changed, and you don't want to have to unfocus the field to update its .value
 
+  var messages = 0;
+
 	first.onchange = function() {
 	  myWorker.postMessage([first.value,second.value]); // Sending message as an array to the worker
+    messages++;
 	  console.log('Message posted to worker');
 	};
 
 	second.onchange = function() {
 	  myWorker.postMessage([first.value,second.value]);
+    messages++;
 	  console.log('Message posted to worker');
 	};
 
 	myWorker.onmessage = function(e) {
+    messages--;
 		result.textContent = e.data;
 		console.log('Message received from worker');
 	};
 }
+
+window.addEventListener("beforeunload", function (e) {
+  if (messages > 0) {
+    var confirmationMessage = "\o/";
+
+    e.returnValue = confirmationMessage;     // Gecko and Trident
+    return confirmationMessage;              // Gecko and WebKit
+  }
+});
