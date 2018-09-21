@@ -1,3 +1,11 @@
+var interval = document.querySelector('#interval');
+
+interval.addEventListener("change", () => {
+  Array.prototype.forEach.call(document.getElementsByClassName("interval"), element => {
+    element.textContent = interval.value;
+  })
+})
+
 var first = document.querySelector('#number1');
 var second = document.querySelector('#number2');
 

@@ -14,20 +14,24 @@
   </head>
 
   <body>
-    <h2>1. You can see the result updated in 5 seconds after changing numbers.</h2>
-    <h2>2. You can see the result updated in 5 seconds even if you reload this page.</h2>
+    <h2>1. You can see the result updated in <span class="interval">5</span> seconds after changing numbers.</h2>
+    <h2>2. You can see the result updated in <span class="interval">5</span> seconds even if you reload this page.</h2>
     <h1>Service<br>Worker<br>example</h1>
 
     <div class="controls" tabindex="0">
 
     <form>
       <div>
+        <label for="interval">Interval (seconds): </label>
+        <input type="number" id="interval" value="5">
+      </div>
+      <div>
         <label for="number1">Multiply number 1: </label>
-        <input type="text" id="number1" value="1">
+        <input type="number" id="number1" value="1">
       </div>
       <div>
         <label for="number2">Multiply number 2: </label>
-        <input type="text" id="number2" value="2">
+        <input type="number" id="number2" value="2">
       </div>
     </form>
 
