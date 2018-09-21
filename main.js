@@ -6,6 +6,7 @@ var result = document.querySelector('.result');
 if ('serviceWorker' in navigator) {
 
   let controllerChange = new Promise((resolve, reject) => {
+    console.log("main.js #2 controllerChange")
     // Assign oncontrollerchange instead of calling addEventListener with controllerchange.
     // controllerchange event doesn't work yet.
     // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/oncontrollerchange
@@ -15,6 +16,7 @@ if ('serviceWorker' in navigator) {
   });
 
   navigator.serviceWorker.register('/worker.js').then(reg => {
+    console.log("main.js #1 reg: ", reg)
     console.log("main.js #1 navigator.serviceWorker.controller: ", navigator.serviceWorker.controller)
     if (navigator.serviceWorker.controller) {
       // 既にコントロール状態 (二回目以降のロード時)
@@ -24,8 +26,14 @@ if ('serviceWorker' in navigator) {
     // コントロールされるのを待つ (初回ロード時)
     return controllerChange;
   }).then((controller) => {
+
     console.log("main.js #3 navigator.serviceWorker.controller: ", navigator.serviceWorker.controller)
     var messages = 0;
+
+    const eventNames = ["statechange", "error", "install", "activate"];
+    eventNames.forEach(eventName => {
+      navigator.serviceWorker.addEventListener(eventName, e => console.log(`main.js ${eventName} event:`, e))
+    });
 
 	  first.addEventListener("change", () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);

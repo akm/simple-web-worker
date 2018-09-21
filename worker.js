@@ -15,9 +15,19 @@ self.addEventListener('message', function(e) {
 })
 
 self.addEventListener('install', function(event) {
-    event.waitUntil(self.skipWaiting()); // Activate worker immediately
+  console.log("worker.js install")
+  event.waitUntil(self.skipWaiting()); // Activate worker immediately
 });
 
 self.addEventListener('activate', function(event) {
-    event.waitUntil(self.clients.claim()); // Become available to all pages
+  console.log("worker.js activate")
+  event.waitUntil(self.clients.claim()); // Become available to all pages
+});
+
+self.addEventListener('statechange', function(event) {
+  console.log("worker.js statechange")
+});
+
+self.addEventListener('error', function(event) {
+  console.log("worker.js error")
 });
