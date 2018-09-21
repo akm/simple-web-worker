@@ -1,6 +1,11 @@
 self.addEventListener('message', function(e) {
   console.log("worker.js message", e);
-  calculate(e.data)
+  switch (e.data.type) {
+  case "CALCULATE":
+    calculate(e.data.params)
+  default:
+    throw `Unknown type "${e.data.type}"`
+  }
 })
 
 const calculate = (data) => {

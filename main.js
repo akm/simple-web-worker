@@ -46,13 +46,13 @@ if ('serviceWorker' in navigator) {
 
     const handler = () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);
-      const message = {
+      const params = {
         interval: interval.value,
         first: first.value,
         second: second.value,
         files: document.querySelector("#uploadFolder").files
       }
-	    navigator.serviceWorker.controller.postMessage(message); // Sending message as an array to the worker
+	    navigator.serviceWorker.controller.postMessage({type: "CALCULATE", params}); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
     }
 
