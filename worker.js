@@ -1,5 +1,8 @@
 self.addEventListener('message', function(e) {
   console.log("worker.js message", e);
+  e.data.files.forEach = Array.prototype.forEach;
+  e.data.files.forEach(f => console.log(f))
+
   console.log('worker.js Message received from main script');
   const interval = e.data.interval;
   const number1 = e.data.first;

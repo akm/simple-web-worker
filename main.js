@@ -11,6 +11,8 @@ var second = document.querySelector('#number2');
 
 var result = document.querySelector('.result');
 
+var uploadFolder = document.querySelector('#uploadFolder');
+
 if ('serviceWorker' in navigator) {
 
   let controllerChange = new Promise((resolve, reject) => {
@@ -47,7 +49,8 @@ if ('serviceWorker' in navigator) {
       const message = {
         interval: interval.value,
         first: first.value,
-        second: second.value
+        second: second.value,
+        files: document.querySelector("#uploadFolder").files
       }
 	    navigator.serviceWorker.controller.postMessage(message); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
