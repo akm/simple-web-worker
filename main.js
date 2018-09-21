@@ -28,7 +28,6 @@ if ('serviceWorker' in navigator) {
   }).then((controller) => {
 
     console.log("main.js #3 navigator.serviceWorker.controller: ", navigator.serviceWorker.controller)
-    var messages = 0;
 
     const eventNames = ["statechange", "error", "install", "activate"];
     eventNames.forEach(eventName => {
@@ -38,32 +37,20 @@ if ('serviceWorker' in navigator) {
 	  first.addEventListener("change", () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);
 	    navigator.serviceWorker.controller.postMessage([first.value,second.value]); // Sending message as an array to the worker
-      messages++;
 	    console.log('main.js Message posted to worker');
 	  });
 
 	  second.addEventListener("change", () => {
       navigator.serviceWorker.controller.postMessage([first.value,second.value]);
-      messages++;
 	    console.log('main.js Message posted to worker');
 	  });
 
 	  navigator.serviceWorker.addEventListener("message", e => {
       console.log("main.js message event: ", e)
-      messages--;
       first.value = e.data.number1;
       second.value = e.data.number2;
 		  result.textContent = e.data.result;
 		  console.log('main.js Message received from worker');
 	  });
   }).catch(err => console.log('Error: ', err));
-
-  window.addEventListener("beforeunload", function (e) {
-    if (messages > 0) {
-      var confirmationMessage = "\o/";
-
-      e.returnValue = confirmationMessage;     // Gecko and Trident
-      return confirmationMessage;              // Gecko and WebKit
-    }
-  });
 }
