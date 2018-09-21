@@ -15,7 +15,7 @@ if ('serviceWorker' in navigator) {
     };
   });
 
-  navigator.serviceWorker.register('/worker.js').then(reg => {
+  navigator.serviceWorker.register('worker.js').then(reg => {
     console.log("main.js #1 reg: ", reg)
     console.log("main.js #1 navigator.serviceWorker.controller: ", navigator.serviceWorker.controller)
     if (navigator.serviceWorker.controller) {
