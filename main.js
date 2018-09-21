@@ -6,9 +6,12 @@ var result = document.querySelector('.result');
 if ('serviceWorker' in navigator) {
 
   let controllerChange = new Promise((resolve, reject) => {
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // Assign oncontrollerchange instead of calling addEventListener with controllerchange.
+    // controllerchange event doesn't work yet.
+    // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/oncontrollerchange
+    navigator.serviceWorker.oncontrollerchange = () => {
       resolve(navigator.serviceWorker.controller);
-    });
+    };
   });
 
   navigator.serviceWorker.register('/worker.js').then(reg => {
