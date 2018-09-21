@@ -44,7 +44,7 @@ if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener(eventName, e => console.log(`main.js ${eventName} event:`, e))
     });
 
-    const handler = () => {
+    const requestCalculation = () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);
       const params = {
         interval: interval.value,
@@ -56,8 +56,8 @@ if ('serviceWorker' in navigator) {
 	    console.log('main.js Message posted to worker');
     }
 
-	  first.addEventListener("change", handler)
-	  second.addEventListener("change", handler)
+	  first.addEventListener("change", requestCalculation)
+	  second.addEventListener("change", requestCalculation)
 
     const dispatch = (type) => {
       switch (type) {
