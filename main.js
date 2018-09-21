@@ -51,6 +51,8 @@ if ('serviceWorker' in navigator) {
 	  navigator.serviceWorker.addEventListener("message", e => {
       console.log("main.js message event: ", e)
       messages--;
+      first.value = e.data.number1;
+      second.value = e.data.number2;
 		  result.textContent = e.data.result;
 		  console.log('main.js Message received from worker');
 	  });

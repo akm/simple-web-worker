@@ -2,13 +2,15 @@ self.addEventListener('message', function(e) {
   setTimeout(function(){
     console.log("worker.js message", e);
     console.log('worker.js Message received from main script');
-    var result = (e.data[0] * e.data[1]);
+    const number1 = e.data[0];
+    const number2 = e.data[1];
+    var result = number1 * number2;
     console.log('worker.js Posting message back to main script', result);
     self.clients.matchAll().
       then(clients => {
         clients.forEach(client => {
           console.log("worker.js client: ", client);
-          client.postMessage({result});
+          client.postMessage({number1, number2, result});
         })
       });
   }, 5000)
