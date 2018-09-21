@@ -44,7 +44,12 @@ if ('serviceWorker' in navigator) {
 
     const handler = () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);
-	    navigator.serviceWorker.controller.postMessage([first.value,second.value]); // Sending message as an array to the worker
+      const message = {
+        interval: interval.value,
+        first: first.value,
+        second: second.value
+      }
+	    navigator.serviceWorker.controller.postMessage(message); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
     }
 

@@ -1,9 +1,10 @@
 self.addEventListener('message', function(e) {
+  const interval = e.data.interval;
+  const number1 = e.data.first;
+  const number2 = e.data.second;
   setTimeout(function(){
     console.log("worker.js message", e);
     console.log('worker.js Message received from main script');
-    const number1 = e.data[0];
-    const number2 = e.data[1];
     var result = number1 * number2;
     console.log('worker.js Posting message back to main script', result);
     self.clients.matchAll().
@@ -13,7 +14,7 @@ self.addEventListener('message', function(e) {
           client.postMessage({number1, number2, result});
         })
       });
-  }, 5000)
+  }, interval * 1000)
 })
 
 self.addEventListener('install', function(event) {
