@@ -9,7 +9,7 @@ interval.addEventListener("change", () => {
 var first = document.querySelector('#number1');
 var second = document.querySelector('#number2');
 
-var result = document.querySelector('.result');
+var resultArea = document.querySelector('.result');
 
 var uploadFolder = document.querySelector('#uploadFolder');
 
@@ -59,11 +59,25 @@ if ('serviceWorker' in navigator) {
 	  first.addEventListener("change", handler)
 	  second.addEventListener("change", handler)
 
+    const dispatch = (type) => {
+      switch (type) {
+      case "CALCULATE_RESULT":
+        return showCalculateResult;
+      default:
+        throw `Unknown result type: ${type}`
+      }
+    }
+
+    const showCalculateResult = ({number1, number2, result}) => {
+      first.value = number1;
+      second.value = number2;
+		  resultArea.textContent = result;
+    }
+
 	  navigator.serviceWorker.addEventListener("message", e => {
       console.log("main.js message event: ", e)
-      first.value = e.data.number1;
-      second.value = e.data.number2;
-		  result.textContent = e.data.result;
+      const f = dispatch(e.data.type)
+      f(e.data.result)
 		  console.log('main.js Message received from worker');
 	  });
   }).catch(err => console.log('Error: ', err));

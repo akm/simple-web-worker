@@ -28,7 +28,7 @@ const calculate = (type, data) => {
       then(clients => {
         clients.forEach(client => {
           console.log("worker.js client: ", client);
-          client.postMessage({number1, number2, result});
+          client.postMessage({type: `${type}_RESULT`, result: {number1, number2, result}});
         })
       });
   }, interval * 1000)
