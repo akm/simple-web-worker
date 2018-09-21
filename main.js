@@ -56,8 +56,21 @@ if ('serviceWorker' in navigator) {
 	    console.log('main.js Message posted to worker');
     }
 
+    const showCalculateResult = ({number1, number2, result}) => {
+      first.value = number1;
+      second.value = number2;
+		  resultArea.textContent = result;
+    }
+
 	  first.addEventListener("change", requestCalculation)
 	  second.addEventListener("change", requestCalculation)
+
+	  navigator.serviceWorker.addEventListener("message", e => {
+      console.log("main.js message event: ", e)
+      const f = dispatch(e.data.type)
+      f(e.data.result)
+		  console.log('main.js Message received from worker');
+	  });
 
     const dispatch = (type) => {
       switch (type) {
@@ -67,18 +80,5 @@ if ('serviceWorker' in navigator) {
         throw `Unknown result type: ${type}`
       }
     }
-
-    const showCalculateResult = ({number1, number2, result}) => {
-      first.value = number1;
-      second.value = number2;
-		  resultArea.textContent = result;
-    }
-
-	  navigator.serviceWorker.addEventListener("message", e => {
-      console.log("main.js message event: ", e)
-      const f = dispatch(e.data.type)
-      f(e.data.result)
-		  console.log('main.js Message received from worker');
-	  });
   }).catch(err => console.log('Error: ', err));
 }
