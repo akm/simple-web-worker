@@ -3,39 +3,43 @@ var second = document.querySelector('#number2');
 
 var result = document.querySelector('.result');
 
-if (window.Worker) { // Check if Browser supports the Worker api.
-	// Requires script name as input
-	var myWorker = new Worker("worker.js");
+if ('serviceWorker' in navigator) {
 
-// onkeyup could be used instead of onchange if you wanted to update the answer every time
-// an entered value is changed, and you don't want to have to unfocus the field to update its .value
+  navigator.serviceWorker.register('/worker.js').then(function(registration) {
+    console.log('ServiceWorker registration: ', registration);
+    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+  }).catch(function(err) {
+    console.log('ServiceWorker registration failed: ', err);
+  });
+
 
   var messages = 0;
 
 	first.onchange = function() {
-	  myWorker.postMessage([first.value,second.value]); // Sending message as an array to the worker
+    console.log('navigator.serviceWorker: ', navigator.serviceWorker);
+	  navigator.serviceWorker.controller.postMessage([first.value,second.value]); // Sending message as an array to the worker
     messages++;
 	  console.log('Message posted to worker');
 	};
 
 	second.onchange = function() {
-	  myWorker.postMessage([first.value,second.value]);
+    navigator.serviceWorker.controller.postMessage([first.value,second.value]);
     messages++;
 	  console.log('Message posted to worker');
 	};
 
-	myWorker.onmessage = function(e) {
+	navigator.serviceWorker.controller.onmessage = function(e) {
     messages--;
 		result.textContent = e.data;
 		console.log('Message received from worker');
 	};
+
+  window.addEventListener("beforeunload", function (e) {
+    if (messages > 0) {
+      var confirmationMessage = "\o/";
+
+      e.returnValue = confirmationMessage;     // Gecko and Trident
+      return confirmationMessage;              // Gecko and WebKit
+    }
+  });
 }
-
-window.addEventListener("beforeunload", function (e) {
-  if (messages > 0) {
-    var confirmationMessage = "\o/";
-
-    e.returnValue = confirmationMessage;     // Gecko and Trident
-    return confirmationMessage;              // Gecko and WebKit
-  }
-});
