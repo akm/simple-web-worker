@@ -56,7 +56,7 @@ if ('serviceWorker' in navigator) {
 	    console.log('main.js Message posted to worker');
     }
 
-    const showCalculateResult = ({number1, number2, result}) => {
+    const showCalculation = ({number1, number2, result}) => {
       first.value = number1;
       second.value = number2;
 		  resultArea.textContent = result;
@@ -75,7 +75,7 @@ if ('serviceWorker' in navigator) {
     const dispatch = (type) => {
       switch (type) {
       case "CALCULATE_RESULT":
-        return showCalculateResult;
+        return showCalculation;
       default:
         throw `Unknown result type: ${type}`
       }
