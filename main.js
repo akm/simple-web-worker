@@ -106,10 +106,24 @@ if ('serviceWorker' in navigator) {
       }
     }
 
+    var clicked = false;
+    const links = document.getElementsByTagName("a");
+    links.forEach = Array.prototype.forEach;
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        console.log("main.js click event: ", e);
+        clicked = true;
+        setTimeout(() => clicked = false, 500)
+      })
+    })
+
     window.addEventListener('beforeunload', e => {
       console.log("main.js beforeunload event: ", e);
       console.log("main.js beforeunload workingJobs: ", workingJobs)
       if (workingJobs < 1) {
+        return;
+      }
+      if (clicked) {
         return;
       }
       var confirmationMessage = "\o/";
