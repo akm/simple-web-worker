@@ -42,16 +42,14 @@ if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener(eventName, e => console.log(`main.js ${eventName} event:`, e))
     });
 
-	  first.addEventListener("change", () => {
+    const handler = () => {
       console.log('main.js navigator.serviceWorker: ', navigator.serviceWorker);
 	    navigator.serviceWorker.controller.postMessage([first.value,second.value]); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
-	  });
+    }
 
-	  second.addEventListener("change", () => {
-      navigator.serviceWorker.controller.postMessage([first.value,second.value]);
-	    console.log('main.js Message posted to worker');
-	  });
+	  first.addEventListener("change", handler)
+	  second.addEventListener("change", handler)
 
 	  navigator.serviceWorker.addEventListener("message", e => {
       console.log("main.js message event: ", e)
