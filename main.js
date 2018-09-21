@@ -12,6 +12,8 @@ var second = document.querySelector('#number2');
 var resultArea = document.querySelector('.result');
 
 var uploadFolder = document.querySelector('#uploadFolder');
+var showDetailButton = document.querySelector('#showDetailButton');
+var fileDetailArea = document.querySelector('#fileDetails');
 
 if ('serviceWorker' in navigator) {
 
@@ -49,8 +51,7 @@ if ('serviceWorker' in navigator) {
       const params = {
         interval: interval.value,
         first: first.value,
-        second: second.value,
-        files: document.querySelector("#uploadFolder").files
+        second: second.value
       }
 	    navigator.serviceWorker.controller.postMessage({type: "CALCULATE", params}); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
@@ -65,6 +66,25 @@ if ('serviceWorker' in navigator) {
 	  first.addEventListener("change", requestCalculation)
 	  second.addEventListener("change", requestCalculation)
 
+
+    const requestFileDetail = (e) => {
+      e.preventDefault()
+      const params = {
+        files: document.querySelector("#uploadFolder").files
+      }
+	    navigator.serviceWorker.controller.postMessage({type: "FILE_DETAIL", params}); // Sending message as an array to the worker
+    }
+    const showFileDetail = ({lines}) => {
+      fileDetailArea.innerHTML = "";
+      lines.forEach(line => {
+        const div = document.createElement("li");
+        div.textContent = line;
+        fileDetailArea.appendChild(div);
+      })
+    }
+
+    showDetailButton.addEventListener('click', requestFileDetail)
+
 	  navigator.serviceWorker.addEventListener("message", e => {
       console.log("main.js message event: ", e)
       const f = dispatch(e.data.type)
@@ -76,6 +96,8 @@ if ('serviceWorker' in navigator) {
       switch (type) {
       case "CALCULATE_RESULT":
         return showCalculation;
+      case "FILE_DETAIL_RESULT":
+        return showFileDetail;
       default:
         throw `Unknown result type: ${type}`
       }

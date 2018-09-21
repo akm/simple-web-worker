@@ -8,14 +8,14 @@ const dispatch = (type) => {
   switch (type) {
   case "CALCULATE":
     return calculate;
+  case "FILE_DETAIL":
+    return fileDetail;
   default:
     throw `Unknown type "${e.data.type}"`
   }
 }
 
 const calculate = (type, data) => {
-  data.files.forEach = Array.prototype.forEach;
-  data.files.forEach(f => console.log(f))
 
   console.log('worker.js Message received from main script');
   const interval = data.interval;
@@ -33,6 +33,20 @@ const calculate = (type, data) => {
       });
   }, interval * 1000)
 }
+
+const fileDetail = (type, data) => {
+  data.files.map = Array.prototype.map;
+  const lines = data.files.map(f => `${f.webkitRelativePath} [${f.type}]: ${f.size} bytes`)
+
+  self.clients.matchAll().
+    then(clients => {
+      clients.forEach(client => {
+        console.log("worker.js client: ", client);
+        client.postMessage({type: `${type}_RESULT`, result: {lines}});
+      })
+    });
+}
+
 
 self.addEventListener('install', function(event) {
   console.log("worker.js install")
