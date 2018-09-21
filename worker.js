@@ -1,16 +1,16 @@
 self.addEventListener('message', function(e) {
   console.log("worker.js message", e);
-  calculate(e)
+  calculate(e.data)
 })
 
-const calculate = (e) => {
-  e.data.files.forEach = Array.prototype.forEach;
-  e.data.files.forEach(f => console.log(f))
+const calculate = (data) => {
+  data.files.forEach = Array.prototype.forEach;
+  data.files.forEach(f => console.log(f))
 
   console.log('worker.js Message received from main script');
-  const interval = e.data.interval;
-  const number1 = e.data.first;
-  const number2 = e.data.second;
+  const interval = data.interval;
+  const number1 = data.first;
+  const number2 = data.second;
   setTimeout(function(){
     var result = number1 * number2;
     console.log('worker.js Posting message back to main script', result);
