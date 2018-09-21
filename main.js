@@ -38,6 +38,7 @@ if ('serviceWorker' in navigator) {
     // コントロールされるのを待つ (初回ロード時)
     return controllerChange;
   }).then((controller) => {
+    var workingJobs = 0;
 
     console.log("main.js #3 navigator.serviceWorker.controller: ", navigator.serviceWorker.controller)
 
@@ -55,9 +56,11 @@ if ('serviceWorker' in navigator) {
       }
 	    navigator.serviceWorker.controller.postMessage({type: "CALCULATE", params}); // Sending message as an array to the worker
 	    console.log('main.js Message posted to worker');
+      workingJobs++;
     }
 
     const showCalculation = ({number1, number2, result}) => {
+      workingJobs--;
       first.value = number1;
       second.value = number2;
 		  resultArea.textContent = result;
@@ -102,5 +105,17 @@ if ('serviceWorker' in navigator) {
         throw `Unknown result type: ${type}`
       }
     }
+
+    window.addEventListener('beforeunload', e => {
+      console.log("main.js beforeunload event: ", e);
+      console.log("main.js beforeunload workingJobs: ", workingJobs)
+      if (workingJobs < 1) {
+        return;
+      }
+      var confirmationMessage = "\o/";
+      e.returnValue = confirmationMessage;     // Gecko and Trident
+      return confirmationMessage;              // Gecko and WebKit
+    });
+
   }).catch(err => console.log('Error: ', err));
 }
