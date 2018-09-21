@@ -1,5 +1,9 @@
 self.addEventListener('message', function(e) {
   console.log("worker.js message", e);
+  calculate(e)
+})
+
+const calculate = (e) => {
   e.data.files.forEach = Array.prototype.forEach;
   e.data.files.forEach(f => console.log(f))
 
@@ -18,7 +22,7 @@ self.addEventListener('message', function(e) {
         })
       });
   }, interval * 1000)
-})
+}
 
 self.addEventListener('install', function(event) {
   console.log("worker.js install")
