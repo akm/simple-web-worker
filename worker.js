@@ -1,14 +1,19 @@
 self.addEventListener('message', function(e) {
   console.log("worker.js message", e);
-  switch (e.data.type) {
+  const f = dispatch(e.data.type);
+  f(e.data.type, e.data.params);
+})
+
+const dispatch = (type) => {
+  switch (type) {
   case "CALCULATE":
-    calculate(e.data.params)
+    return calculate;
   default:
     throw `Unknown type "${e.data.type}"`
   }
-})
+}
 
-const calculate = (data) => {
+const calculate = (type, data) => {
   data.files.forEach = Array.prototype.forEach;
   data.files.forEach(f => console.log(f))
 
