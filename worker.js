@@ -1,10 +1,10 @@
 self.addEventListener('message', function(e) {
+  console.log("worker.js message", e);
+  console.log('worker.js Message received from main script');
   const interval = e.data.interval;
   const number1 = e.data.first;
   const number2 = e.data.second;
   setTimeout(function(){
-    console.log("worker.js message", e);
-    console.log('worker.js Message received from main script');
     var result = number1 * number2;
     console.log('worker.js Posting message back to main script', result);
     self.clients.matchAll().
