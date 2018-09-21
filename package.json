@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mdn/simple-web-worker/issues"
   },
-  "homepage": "https://github.com/mdn/simple-web-worker#readme"
+  "homepage": "https://github.com/mdn/simple-web-worker#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
 }
